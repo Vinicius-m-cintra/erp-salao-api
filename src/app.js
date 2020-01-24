@@ -1,21 +1,24 @@
 const express = require('express');
 var cors = require('cors')
+const sequelize = require('./config/sequelize')
 
 var app = express();
 app.use(cors())
 
 class AppController {
     constructor() {
-        app = express()
+        this.express = express()
+        this.middlewares()
+        this.routes()
     }
 
     middlewares() {
-        app.use(express.json())
+        this.express.use(express.json())
     }
 
     routes() {
-        app.use(require('./routes'))
+        this.express.use(require('./routes'))
     }
 }
 
-module.exports = new AppController().express;
+module.exports = new AppController();
