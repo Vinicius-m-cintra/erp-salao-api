@@ -1,24 +1,26 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const schema = mongoose.Schema({
+const schema = mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     email: {
-        type: String,
-        required: true,
-        index: { unique: true }
+      type: String,
+      required: true
     },
     cellphone: {
-        type: String,
-        required: true
+      type: String,
+      required: true
     },
     balance: {
-        type: Number,
-        required: true,
-        default: 0
+      type: Number,
+      required: true,
+      default: 0
     }
-}, { timestamps: true });
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('Provider', schema, 'providers');
+module.exports = mongoose.model("Provider", schema, "providers");

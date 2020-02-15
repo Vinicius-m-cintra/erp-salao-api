@@ -1,80 +1,30 @@
-const Attendance = require('./attendance.model');
-
-const attendanceController = {}; // Objeto vazio
-
-attendanceController.novo = async function(req, res) {
-   try {
-      await Attendance.create(req.body);
-      
-      res.status(200).json({ ok: true });
-   }
-   catch(erro) {
-      console.error(erro);
-        
-      res.sendStatus(500).end();
-   }
+const attendanceActions = require("./attendance.actions");
+function createResponse(statusCode, result) {
+  return {
+    statusCode,
+    result
+  };
 }
 
-attendanceController.listar = async function(req, res) {
-   try {
-      const attendances = await Attendance.find().populate('id_customer').populate('spents');
-      res.send(attendances);
-   }
-   catch(erro) {
-      console.error(erro);
-      res.sendStatus(500).end();
-   }
-}
-
-attendanceController.obterUm = async function(req, res) {
-   const id = req.params.id;
-   try {
-      const attendance = await Attendance.findById(id).populate('id_customer').populate('spents');
-      if(attendance) {    
-         res.send(attendance);
-      }
-      else {      
-         res.sendStatus(404).end();
-      }
-   }
-   catch(erro) {
-      console.error(erro);
-      res.sendStatus(500).end();
-   }
-}
-
-attendanceController.atualizar = async function(req, res) {
-   const id = req.params._id;
-   try {
-      const attendance = await Attendance.findByIdAndUpdate(id, req.body);
-      if(attendance) {
-         res.sendStatus(204).end();
-      }
-      else {
-         res.sendStatus(404).end();
-      }
-   }
-   catch(erro) {
-      console.error(erro);
-      res.sendStatus(500).end();
-   }
-}
-
-attendanceController.excluir = async function(req, res) {
-   const id = req.params._id;
-   try {
-      const attendance = await Attendance.findByIdAndDelete(id);
-      if(attendance) {
-         res.sendStatus(204).end();
-      }
-      else {
-         res.sendStatus(404).end();
-      }
-   }
-   catch(erro) {
-      console.error(erro);
-      res.sendStatus(500).end();
-   }
-}
+const attendanceController = {
+  consultAttendances() {
+    return new Promise((resolve, reject) => {
+      attendanceActions
+        .getAttendancess()
+        .then(attendances => resolve(createResponse(200, attendances)))
+        .catch(error => reject(createResponse(500, error)));
+    });
+  },
+  findOneAttendance(id) {
+    return new Promise((resolve, reject) => {
+      attendanceActions
+        .getOneAttendance(id)
+        .then(attendance => {
+          resolve(createResponse(200, attendance));
+        })
+        .catch(error => reject(createResponse(500, error)));
+    });
+  }
+};
 
 module.exports = attendanceController;

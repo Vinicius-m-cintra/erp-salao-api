@@ -1,12 +1,19 @@
-const express = require('express');
-const providerController = require('./provider.controller');
+const providerRoutes = require("express").Router();
 
-const providerRoute = express.Router()
+const providerController = require("./provider.controller");
 
-providerRoute.post('/provider', providerController.novo);
-providerRoute.get('/provider', providerController.listar);
-providerRoute.get('/provider/:id', providerController.obterUm);
-providerRoute.put('/provider/:id', providerController.atualizar);
-providerRoute.delete('/provider/:id', providerController.excluir);
+providerRoutes.post("/fornecedor", async (req, res, next) => {
+  let response = await providerController
+    .saveProvider(req)
+    .then(response => {
+      return response;
+    })
+    .catch(error => {
+      return error;
+    });
 
-module.exports = providerRoute;
+  res.status(response.statusCode).send(response.result);
+  next();
+});
+
+module.exports = providerRoutes;

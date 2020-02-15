@@ -1,33 +1,29 @@
-const express = require('express');
-var cors = require('cors')
+const express = require("express");
+var cors = require("cors");
 
-const database = require('./config/database');
-database('mongodb://localhost:27017/erp-salao');
+const database = require("./config/database");
+database("mongodb://localhost:27017/erp-salao");
 
 var app = express();
-app.use(cors())
+app.use(cors());
 
 class AppController {
-    constructor() {
-        this.express = express()
-        this.middlewares()
-        this.routes()
-    }
-    
-    middlewares() {
-        this.express.use(express.json())
-    }
+  constructor() {
+    this.express = express();
+    this.middlewares();
+    this.routes();
+  }
 
-    routes() {
-        this.express.use(require('./routes'))
-        this.express.use(require('./provider/provider.routes'))
-        this.express.use(require('./service/service.routes'))
-        this.express.use(require('./product/product.routes'))
-        this.express.use(require('./customer/customer.routes'))
-        this.express.use(require('./spent/spent.routes'))
-        this.express.use(require('./payment/payment.routes'))
-        this.express.use(require('./attendance/attendance.routes'))
-    }
+  middlewares() {
+    this.express.use(express.json());
+  }
+
+  routes() {
+    this.express.use(require("./routes"));
+
+    this.express.use(require("./attendance/attendance.routes"));
+    this.express.use(require("./provider/provider.routes"));
+  }
 }
 
 module.exports = new AppController();
