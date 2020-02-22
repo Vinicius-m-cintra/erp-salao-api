@@ -8,6 +8,14 @@ const providerActions = {
     } catch (error) {
       return error;
     }
+  },
+  async findAll() {
+    try {
+      const providers = await Provider.find();
+      return providers;
+    } catch (error) {
+      return error;
+    }
   }
 };
 

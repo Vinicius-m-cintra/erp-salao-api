@@ -14,6 +14,14 @@ const providerController = {
         .then(response => resolve(createResponse(200, response)))
         .catch(error => reject(createResponse(500, error)));
     });
+  },
+  findAll() {
+    return new Promise((resolve, reject) => {
+      providerActions
+        .findAll()
+        .then(response => resolve(createResponse(200, response)))
+        .catch(error => reject(createResponse(500, error)));
+    });
   }
 };
 
