@@ -1,6 +1,6 @@
 const Customer = require('./customer.model');
 
-const formatResponse = require('../common');
+const formatResponse = require('../common/formatResponse');
 
 const customerActions = {
   async saveCustomer(data) {

@@ -1,6 +1,6 @@
 const Product = require('./product.model');
 
-const formatResponse = require('../common');
+const formatResponse = require('../common/formatResponse');
 
 const productActions = {
   async saveProduct(data) {

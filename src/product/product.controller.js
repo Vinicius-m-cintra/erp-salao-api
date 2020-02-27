@@ -2,7 +2,7 @@
 const Joi = require('@hapi/joi');
 
 const productActions = require('./product.actions');
-const createResponse = require('../common');
+const createResponse = require('../common/createResponse');
 
 const productController = {
   saveProduct(data) {

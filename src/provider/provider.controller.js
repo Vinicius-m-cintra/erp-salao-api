@@ -3,7 +3,7 @@ const Joi = require('@hapi/joi');
 
 const providerActions = require('./provider.actions');
 
-const createResponse = require('../common');
+const createResponse = require('../common/createResponse');
 
 const providerController = {
   saveProvider(data) {

@@ -1,6 +1,6 @@
 const Provider = require('./provider.model');
 
-const formatResponse = require('../common');
+const formatResponse = require('../common/formatResponse');
 
 const providerActions = {
   async saveProvider(data) {

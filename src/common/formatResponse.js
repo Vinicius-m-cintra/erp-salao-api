@@ -14,10 +14,3 @@ module.exports = function formatResponse(docs, options) {
 
   return formatedResponse;
 };
-
-module.exports = function createResponse(statusCode, result) {
-  return {
-    statusCode,
-    result,
-  };
-};
