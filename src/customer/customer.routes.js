@@ -3,10 +3,10 @@ const customerRoutes = require('express').Router();
 const customerController = require('./customer.controller');
 
 customerRoutes.post('/customer', async (req, res, next) => {
-  let response = await customerController
+  const response = await customerController
     .saveCustomer(req.body)
-    .then(response => {
-      return response;
+    .then(customer => {
+      return customer;
     })
     .catch(error => {
       return error;
@@ -17,10 +17,10 @@ customerRoutes.post('/customer', async (req, res, next) => {
 });
 
 customerRoutes.get('/customers', async (req, res, next) => {
-  let response = await customerController
+  const response = await customerController
     .findAll(req.query)
-    .then(response => {
-      return response;
+    .then(answer => {
+      return answer;
     })
     .catch(error => {
       return error;
@@ -31,10 +31,10 @@ customerRoutes.get('/customers', async (req, res, next) => {
 });
 
 customerRoutes.get('/customer/:id', async (req, res, next) => {
-  let response = await customerController
+  const response = await customerController
     .findOne(req.params.id)
-    .then(response => {
-      return response;
+    .then(answer => {
+      return answer;
     })
     .catch(error => {
       return error;
@@ -45,10 +45,10 @@ customerRoutes.get('/customer/:id', async (req, res, next) => {
 });
 
 customerRoutes.patch('/customer/:id', async (req, res, next) => {
-  let response = await customerController
+  const response = await customerController
     .editCustomer(req)
-    .then(response => {
-      return response;
+    .then(answer => {
+      return answer;
     })
     .catch(error => {
       return error;
@@ -59,10 +59,10 @@ customerRoutes.patch('/customer/:id', async (req, res, next) => {
 });
 
 customerRoutes.delete('/customer/:id', async (req, res, next) => {
-  let response = await customerController
+  const response = await customerController
     .deleteCustomer(req.params.id)
-    .then(response => {
-      return response;
+    .then(answer => {
+      return answer;
     })
     .catch(error => {
       return error;

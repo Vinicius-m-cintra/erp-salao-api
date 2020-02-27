@@ -3,10 +3,10 @@ const providerRoutes = require('express').Router();
 const providerController = require('./provider.controller');
 
 providerRoutes.post('/provider', async (req, res, next) => {
-  let response = await providerController
+  const response = await providerController
     .saveProvider(req.body)
-    .then(response => {
-      return response;
+    .then(answer => {
+      return answer;
     })
     .catch(error => {
       return error;
@@ -17,10 +17,10 @@ providerRoutes.post('/provider', async (req, res, next) => {
 });
 
 providerRoutes.get('/providers', async (req, res, next) => {
-  let response = await providerController
+  const response = await providerController
     .findAll(req.query)
-    .then(response => {
-      return response;
+    .then(answer => {
+      return answer;
     })
     .catch(error => {
       return error;
@@ -31,10 +31,10 @@ providerRoutes.get('/providers', async (req, res, next) => {
 });
 
 providerRoutes.get('/provider/:id', async (req, res, next) => {
-  let response = await providerController
+  const response = await providerController
     .findOne(req.params.id)
-    .then(response => {
-      return response;
+    .then(answer => {
+      return answer;
     })
     .catch(error => {
       return error;
@@ -45,10 +45,10 @@ providerRoutes.get('/provider/:id', async (req, res, next) => {
 });
 
 providerRoutes.patch('/provider/:id', async (req, res, next) => {
-  let response = await providerController
+  const response = await providerController
     .editProvider(req)
-    .then(response => {
-      return response;
+    .then(answer => {
+      return answer;
     })
     .catch(error => {
       return error;
@@ -59,10 +59,10 @@ providerRoutes.patch('/provider/:id', async (req, res, next) => {
 });
 
 providerRoutes.delete('/provider/:id', async (req, res, next) => {
-  let response = await providerController
+  const response = await providerController
     .deleteProvider(req.params.id)
-    .then(response => {
-      return response;
+    .then(answer => {
+      return answer;
     })
     .catch(error => {
       return error;

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const Joi = require('@hapi/joi');
 
 const providerActions = require('./provider.actions');
@@ -28,7 +29,7 @@ const providerController = {
       providerActions
         .saveProvider(data)
         .then(response => resolve(createResponse(200, response)))
-        .catch(error => reject(createResponse(500, error)));
+        .catch(err => reject(createResponse(500, err)));
     });
   },
   findAll(params) {
@@ -48,7 +49,7 @@ const providerController = {
       providerActions
         .findAll(params)
         .then(response => resolve(createResponse(200, response)))
-        .catch(error => reject(createResponse(500, error)));
+        .catch(err => reject(createResponse(500, err)));
     });
   },
   findOne(id) {
@@ -66,9 +67,11 @@ const providerController = {
           if (!provider) {
             return reject(createResponse(404, 'Fornecedor não encontrado'));
           }
-          resolve(createResponse(200, provider));
+          return resolve(createResponse(200, provider));
         })
-        .catch(error => reject(createResponse(500, error)));
+        .catch(err => {
+          return reject(createResponse(500, err));
+        });
     });
   },
   editProvider(req) {
@@ -104,7 +107,7 @@ const providerController = {
             resolve(createResponse(404, `Fornecedor não encontrado!`));
           }
         })
-        .catch(error => reject(createResponse(500, error)));
+        .catch(err => reject(createResponse(500, err)));
     });
   },
   deleteProvider(id) {
@@ -130,7 +133,7 @@ const providerController = {
             resolve(createResponse(404, `Fornecedor não encontrado!`));
           }
         })
-        .catch(error => reject(createResponse(500, error)));
+        .catch(err => reject(createResponse(500, err)));
     });
   },
 };

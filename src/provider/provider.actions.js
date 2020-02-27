@@ -1,9 +1,9 @@
 const Provider = require('./provider.model');
 
-//Formata resposta para o padrão
+//  Formata resposta para o padrão
 function formatResponse(docs, options) {
-  let formatedResponse = {};
-  let meta = {};
+  const formatedResponse = {};
+  const meta = {};
   let records = [];
 
   meta.server = process.env.SERVER_URL;
@@ -27,8 +27,8 @@ const providerActions = {
     }
   },
   async findAll(params) {
-    let limit = parseInt(params.limit) || 10;
-    let offset = params.offset || 0;
+    const limit = parseInt(params.limit, {}) || 10;
+    const offset = params.offset || 0;
 
     try {
       const providers = await Provider.find()

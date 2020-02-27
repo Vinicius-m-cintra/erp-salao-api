@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const Joi = require('@hapi/joi');
 
 const customerActions = require('./customer.actions');
@@ -37,7 +38,7 @@ const customerController = {
       customerActions
         .saveCustomer(data)
         .then(response => resolve(createResponse(200, response)))
-        .catch(error => reject(createResponse(500, error)));
+        .catch(err => reject(createResponse(500, err)));
     });
   },
   findAll(params) {
@@ -57,7 +58,7 @@ const customerController = {
       customerActions
         .findAll(params)
         .then(response => resolve(createResponse(200, response)))
-        .catch(error => reject(createResponse(500, error)));
+        .catch(err => reject(createResponse(500, err)));
     });
   },
   findOne(id) {
@@ -77,7 +78,7 @@ const customerController = {
           }
           resolve(createResponse(200, customer));
         })
-        .catch(error => reject(createResponse(500, error)));
+        .catch(err => reject(createResponse(500, err)));
     });
   },
   editCustomer(req) {
@@ -120,7 +121,7 @@ const customerController = {
             resolve(createResponse(404, `Cliente não encontrado!`));
           }
         })
-        .catch(error => reject(createResponse(500, error)));
+        .catch(err => reject(createResponse(500, err)));
     });
   },
   deleteCustomer(id) {
@@ -146,7 +147,7 @@ const customerController = {
             resolve(createResponse(404, `Customer não encontrado!`));
           }
         })
-        .catch(error => reject(createResponse(500, error)));
+        .catch(err => reject(createResponse(500, err)));
     });
   },
 };
