@@ -16,7 +16,7 @@ customerRoutes.post('/customer', async (req, res, next) => {
   next();
 });
 
-customerRoutes.get('/customers', async (req, res, next) => {
+customerRoutes.get('/customer', async (req, res, next) => {
   const response = await customerController
     .findAll(req.query)
     .then(answer => {

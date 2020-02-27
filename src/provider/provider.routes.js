@@ -16,7 +16,7 @@ providerRoutes.post('/provider', async (req, res, next) => {
   next();
 });
 
-providerRoutes.get('/providers', async (req, res, next) => {
+providerRoutes.get('/provider', async (req, res, next) => {
   const response = await providerController
     .findAll(req.query)
     .then(answer => {

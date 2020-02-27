@@ -18,8 +18,33 @@ const productActions = {
     try {
       const products = await Product.find()
         .limit(limit)
-        .skip(limit * offset);
+        .skip(limit * offset)
+        .populate('provider');
       return formatResponse(products, { limit, offset });
+    } catch (error) {
+      return error;
+    }
+  },
+  async findOne(id) {
+    try {
+      const product = await Product.findById(id).populate('provider');
+      return product;
+    } catch (error) {
+      return error;
+    }
+  },
+  async editProduct(req) {
+    try {
+      const product = await Product.findByIdAndUpdate(req.params.id, req.body);
+      return product;
+    } catch (error) {
+      return error;
+    }
+  },
+  async deleteProduct(id) {
+    try {
+      const product = await Product.findByIdAndDelete(id);
+      return product;
     } catch (error) {
       return error;
     }
