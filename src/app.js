@@ -3,9 +3,10 @@ const cors = require('cors');
 
 const database = require('./config/database');
 const routes = require('./routes');
-const attendanceRoutes = require('./attendance/attendance.routes');
+// const attendanceRoutes = require('./attendance/attendance.routes');
 const providerRoutes = require('./provider/provider.routes');
 const customerRoutes = require('./customer/customer.routes');
+const productRoutes = require('./product/product.routes');
 
 const app = express();
 
@@ -27,9 +28,10 @@ class AppController {
   routes() {
     this.express.use(routes);
 
-    this.express.use(attendanceRoutes);
+    //  this.express.use(attendanceRoutes);
     this.express.use(customerRoutes);
     this.express.use(providerRoutes);
+    this.express.use(productRoutes);
   }
 }
 
