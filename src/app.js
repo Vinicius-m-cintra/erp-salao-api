@@ -7,6 +7,7 @@ const routes = require('./routes');
 const providerRoutes = require('./provider/provider.routes');
 const customerRoutes = require('./customer/customer.routes');
 const productRoutes = require('./product/product.routes');
+const serviceRoutes = require('./service/service.routes');
 
 const app = express();
 
@@ -32,6 +33,7 @@ class AppController {
     this.express.use(customerRoutes);
     this.express.use(providerRoutes);
     this.express.use(productRoutes);
+    this.express.use(serviceRoutes);
   }
 }
 
