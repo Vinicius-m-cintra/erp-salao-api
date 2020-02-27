@@ -1,4 +1,4 @@
-const Provider = require('./provider.model');
+const Customer = require('./customer.model');
 
 //Formata resposta para o padrão
 function formatResponse(docs, options) {
@@ -17,11 +17,11 @@ function formatResponse(docs, options) {
   return formatedResponse;
 }
 
-const providerActions = {
-  async saveProvider(data) {
+const customerActions = {
+  async saveCustomer(data) {
     try {
-      await Provider.create(data);
-      return 'Fornecedor cadastrado com sucesso';
+      await Customer.create(data);
+      return 'Cliente cadastrado com sucesso';
     } catch (error) {
       return error;
     }
@@ -31,41 +31,41 @@ const providerActions = {
     let offset = params.offset || 0;
 
     try {
-      const providers = await Provider.find()
+      const customers = await Customer.find()
         .limit(limit)
         .skip(limit * offset);
-      return formatResponse(providers, { limit, offset });
+      return formatResponse(customers, { limit, offset });
     } catch (error) {
       return error;
     }
   },
   async findOne(id) {
     try {
-      const provider = await Provider.findById(id);
-      return provider;
+      const customer = await Customer.findById(id);
+      return customer;
     } catch (error) {
       return error;
     }
   },
-  async editProvider(req) {
+  async editCustomer(req) {
     try {
-      const provider = await Provider.findByIdAndUpdate(
+      const customer = await Customer.findByIdAndUpdate(
         req.params.id,
         req.body
       );
-      return provider;
+      return customer;
     } catch (error) {
       return error;
     }
   },
-  async deleteProvider(id) {
+  async deleteCustomer(id) {
     try {
-      const provider = await Provider.findByIdAndDelete(id);
-      return provider;
+      const customer = await Customer.findByIdAndDelete(id);
+      return customer;
     } catch (error) {
       return error;
     }
   },
 };
 
-module.exports = providerActions;
+module.exports = customerActions;

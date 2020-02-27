@@ -1,10 +1,10 @@
-const providerRoutes = require('express').Router();
+const customerRoutes = require('express').Router();
 
-const providerController = require('./provider.controller');
+const customerController = require('./customer.controller');
 
-providerRoutes.post('/provider', async (req, res, next) => {
-  let response = await providerController
-    .saveProvider(req.body)
+customerRoutes.post('/customer', async (req, res, next) => {
+  let response = await customerController
+    .saveCustomer(req.body)
     .then(response => {
       return response;
     })
@@ -16,8 +16,8 @@ providerRoutes.post('/provider', async (req, res, next) => {
   next();
 });
 
-providerRoutes.get('/providers', async (req, res, next) => {
-  let response = await providerController
+customerRoutes.get('/customers', async (req, res, next) => {
+  let response = await customerController
     .findAll(req.query)
     .then(response => {
       return response;
@@ -30,8 +30,8 @@ providerRoutes.get('/providers', async (req, res, next) => {
   next();
 });
 
-providerRoutes.get('/provider/:id', async (req, res, next) => {
-  let response = await providerController
+customerRoutes.get('/customer/:id', async (req, res, next) => {
+  let response = await customerController
     .findOne(req.params.id)
     .then(response => {
       return response;
@@ -44,9 +44,9 @@ providerRoutes.get('/provider/:id', async (req, res, next) => {
   next();
 });
 
-providerRoutes.patch('/provider/:id', async (req, res, next) => {
-  let response = await providerController
-    .editProvider(req)
+customerRoutes.patch('/customer/:id', async (req, res, next) => {
+  let response = await customerController
+    .editCustomer(req)
     .then(response => {
       return response;
     })
@@ -58,9 +58,9 @@ providerRoutes.patch('/provider/:id', async (req, res, next) => {
   next();
 });
 
-providerRoutes.delete('/provider/:id', async (req, res, next) => {
-  let response = await providerController
-    .deleteProvider(req.params.id)
+customerRoutes.delete('/customer/:id', async (req, res, next) => {
+  let response = await customerController
+    .deleteCustomer(req.params.id)
     .then(response => {
       return response;
     })
@@ -71,4 +71,5 @@ providerRoutes.delete('/provider/:id', async (req, res, next) => {
   res.status(response.statusCode).send(response.result);
   next();
 });
-module.exports = providerRoutes;
+
+module.exports = customerRoutes;

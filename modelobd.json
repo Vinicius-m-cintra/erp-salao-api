@@ -1,0 +1,54 @@
+{
+  "product": {
+    "name": "string",
+    "cust_price": "number",
+    "stock": "number",
+    "description": "string",
+    "sku": "string",
+    "id_provider": "fk"
+  },
+  "provider": {
+    "name": "string",
+    "email": "string",
+    "cellphone": "string",
+    "balance": "number"
+  },
+  "service": {
+    "name": "string",
+    "description": "string",
+    "suggested_value": "number"
+  },
+  "attendance": {
+    "discount": "number",
+    "total": "number",
+    "customer": {
+      "name": "string",
+      "cellphone": "string",
+      "url_img": "string"
+    },
+    "product_service": [
+      {
+        "name": "string",
+        "description": "string",
+        "value": "number"
+      }
+    ]
+  },
+  "customer": {
+    "name": "string",
+    "birth": "string",
+    "postcode": "string",
+    "street": "string",
+    "neighbourhood": "string",
+    "number": "number",
+    "complement": "string",
+    "cellphone": "string",
+    "url_img": "string",
+    "email": "string",
+    "debt": "number"
+  },
+  "payment": {
+    "value": "number",
+    "id_customer": "fk"
+  }
+}

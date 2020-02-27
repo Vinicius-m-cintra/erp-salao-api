@@ -1,6 +1,6 @@
 const Joi = require('@hapi/joi');
 
-const providerActions = require('./provider.actions');
+const customerActions = require('./customer.actions');
 
 function createResponse(statusCode, result) {
   return {
@@ -9,24 +9,33 @@ function createResponse(statusCode, result) {
   };
 }
 
-const providerController = {
-  saveProvider(data) {
+const customerController = {
+  saveCustomer(data) {
     return new Promise(async (resolve, reject) => {
       const schema = Joi.object({
         name: Joi.string().required(),
+        birth: Joi.string().required(),
         email: Joi.string()
           .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
           .required(),
         cellphone: Joi.string().required(),
-        balance: Joi.number(),
+        postcode: Joi.string().required(),
+        street: Joi.string().required(),
+        neighbourhood: Joi.string().required(),
+        number: Joi.number()
+          .integer()
+          .min(0),
+        complement: Joi.string(),
+        url_img: Joi.string(),
+        debt: Joi.number(),
       });
 
       const { error } = await schema.validate(data);
 
       if (error) return reject(createResponse(400, error));
 
-      providerActions
-        .saveProvider(data)
+      customerActions
+        .saveCustomer(data)
         .then(response => resolve(createResponse(200, response)))
         .catch(error => reject(createResponse(500, error)));
     });
@@ -45,7 +54,7 @@ const providerController = {
       const { error } = await schema.validate(params);
 
       if (error) return reject(createResponse(400, error));
-      providerActions
+      customerActions
         .findAll(params)
         .then(response => resolve(createResponse(200, response)))
         .catch(error => reject(createResponse(500, error)));
@@ -60,28 +69,35 @@ const providerController = {
       const { error } = await schema.validate({ id });
       if (error) return reject(createResponse(400, error));
 
-      providerActions
+      customerActions
         .findOne(id)
-        .then(provider => {
-          if (!provider) {
+        .then(customer => {
+          if (!customer) {
             return reject(createResponse(404, 'Fornecedor não encontrado'));
           }
-          resolve(createResponse(200, provider));
+          resolve(createResponse(200, customer));
         })
         .catch(error => reject(createResponse(500, error)));
     });
   },
-  editProvider(req) {
+  editCustomer(req) {
     return new Promise(async (resolve, reject) => {
       const schema = Joi.object({
         id: Joi.string().required(),
         name: Joi.string(),
+        birth: Joi.string(),
         email: Joi.string().email({
           minDomainSegments: 2,
           tlds: { allow: ['com', 'net'] },
         }),
         cellphone: Joi.string(),
-        balance: Joi.number(),
+        postcode: Joi.string(),
+        street: Joi.string(),
+        neighbourhood: Joi.string(),
+        number: Joi.number(),
+        complement: Joi.string(),
+        url_img: Joi.string(),
+        debt: Joi.number(),
       });
 
       const { error } = await schema.validate({
@@ -90,24 +106,24 @@ const providerController = {
       });
       if (error) return reject(createResponse(400, error));
 
-      providerActions
-        .editProvider(req)
-        .then(provider => {
-          if (provider) {
+      customerActions
+        .editCustomer(req)
+        .then(customer => {
+          if (customer) {
             resolve(
               createResponse(
                 200,
-                `Cadastro de ${provider.name} alterado com sucesso!`
+                `Cadastro de ${customer.name} alterado com sucesso!`
               )
             );
           } else {
-            resolve(createResponse(404, `Fornecedor não encontrado!`));
+            resolve(createResponse(404, `Cliente não encontrado!`));
           }
         })
         .catch(error => reject(createResponse(500, error)));
     });
   },
-  deleteProvider(id) {
+  deleteCustomer(id) {
     return new Promise((resolve, reject) => {
       const schema = Joi.object({
         id: Joi.string().required(),
@@ -116,18 +132,18 @@ const providerController = {
       const { error } = schema.validate({ id });
       if (error) return reject(createResponse(400, error));
 
-      providerActions
-        .deleteProvider(id)
-        .then(provider => {
-          if (provider) {
+      customerActions
+        .deleteCustomer(id)
+        .then(customer => {
+          if (customer) {
             resolve(
               createResponse(
                 200,
-                `Cadastro de ${provider.name} deletado com sucesso!`
+                `Cadastro de ${customer.name} deletado com sucesso!`
               )
             );
           } else {
-            resolve(createResponse(404, `Fornecedor não encontrado!`));
+            resolve(createResponse(404, `Customer não encontrado!`));
           }
         })
         .catch(error => reject(createResponse(500, error)));
@@ -135,4 +151,4 @@ const providerController = {
   },
 };
 
-module.exports = providerController;
+module.exports = customerController;
