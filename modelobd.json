@@ -49,6 +49,7 @@
   },
   "payment": {
     "value": "number",
+    "description": "string",
     "id_customer": "fk"
   }
 }

@@ -1,36 +1,35 @@
 /* eslint-disable consistent-return */
 const Joi = require('@hapi/joi');
 
-const customerActions = require('./customer.actions');
+const attendanceActions = require('./attendance.actions');
 const createResponse = require('../common/createResponse');
 
-const customerController = {
-  saveCustomer(data) {
+const attendanceController = {
+  saveAttendance(data) {
     return new Promise(async (resolve, reject) => {
       const schema = Joi.object({
-        name: Joi.string().required(),
-        birth: Joi.string().required(),
-        email: Joi.string()
-          .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        discount: Joi.number().min(0),
+        total: Joi.number()
+          .min(1)
           .required(),
-        cellphone: Joi.string().required(),
-        postcode: Joi.string().required(),
-        street: Joi.string().required(),
-        neighbourhood: Joi.string().required(),
-        number: Joi.number()
-          .integer()
-          .min(0),
-        complement: Joi.string(),
-        url_img: Joi.string(),
-        debt: Joi.number(),
+        customer: Joi.string().required(),
+        product_service: Joi.array().items(
+          Joi.object({
+            name: Joi.string().required(),
+            description: Joi.string(),
+            value: Joi.number()
+              .min(1)
+              .required(),
+          })
+        ),
       });
 
       const { error } = await schema.validate(data);
 
       if (error) return reject(createResponse(400, error));
 
-      customerActions
-        .saveCustomer(data)
+      attendanceActions
+        .saveAttendance(data)
         .then(response => resolve(createResponse(200, response)))
         .catch(err => reject(createResponse(500, err)));
     });
@@ -49,7 +48,7 @@ const customerController = {
       const { error } = await schema.validate(params);
 
       if (error) return reject(createResponse(400, error));
-      customerActions
+      attendanceActions
         .findAll(params)
         .then(response => resolve(createResponse(200, response)))
         .catch(err => reject(createResponse(500, err)));
@@ -64,35 +63,35 @@ const customerController = {
       const { error } = await schema.validate({ id });
       if (error) return reject(createResponse(400, error));
 
-      customerActions
+      attendanceActions
         .findOne(id)
-        .then(customer => {
-          if (!customer) {
+        .then(attendance => {
+          if (!attendance) {
             return reject(createResponse(404, 'Fornecedor não encontrado'));
           }
-          resolve(createResponse(200, customer));
+          resolve(createResponse(200, attendance));
         })
         .catch(err => reject(createResponse(500, err)));
     });
   },
-  editCustomer(req) {
+  editAttendance(req) {
     return new Promise(async (resolve, reject) => {
       const schema = Joi.object({
         id: Joi.string().required(),
-        name: Joi.string(),
-        birth: Joi.string(),
-        email: Joi.string().email({
-          minDomainSegments: 2,
-          tlds: { allow: ['com', 'net'] },
-        }),
-        cellphone: Joi.string(),
-        postcode: Joi.string(),
-        street: Joi.string(),
-        neighbourhood: Joi.string(),
-        number: Joi.number(),
-        complement: Joi.string(),
-        url_img: Joi.string(),
-        debt: Joi.number(),
+        discount: Joi.number().min(0),
+        total: Joi.number()
+          .min(1)
+          .required(),
+        customer: Joi.string().required(),
+        product_service: Joi.array([
+          Joi.object({
+            name: Joi.string().required(),
+            description: Joi.string(),
+            value: Joi.number()
+              .min(1)
+              .required(),
+          }),
+        ]),
       });
 
       const { error } = await schema.validate({
@@ -101,24 +100,21 @@ const customerController = {
       });
       if (error) return reject(createResponse(400, error));
 
-      customerActions
-        .editCustomer(req)
-        .then(customer => {
-          if (customer) {
+      attendanceActions
+        .editAttendance(req)
+        .then(attendance => {
+          if (attendance) {
             resolve(
-              createResponse(
-                200,
-                `Cadastro de ${customer.name} alterado com sucesso!`
-              )
+              createResponse(200, `Cadastro atendimento alterado com sucesso!`)
             );
           } else {
-            resolve(createResponse(404, `Cliente não encontrado!`));
+            resolve(createResponse(404, `Atendimento não encontrado!`));
           }
         })
         .catch(err => reject(createResponse(500, err)));
     });
   },
-  deleteCustomer(id) {
+  deleteAttendance(id) {
     return new Promise((resolve, reject) => {
       const schema = Joi.object({
         id: Joi.string().required(),
@@ -127,18 +123,18 @@ const customerController = {
       const { error } = schema.validate({ id });
       if (error) return reject(createResponse(400, error));
 
-      customerActions
-        .deleteCustomer(id)
-        .then(customer => {
-          if (customer) {
+      attendanceActions
+        .deleteAttendance(id)
+        .then(attendance => {
+          if (attendance) {
             resolve(
               createResponse(
                 200,
-                `Cadastro de ${customer.name} deletado com sucesso!`
+                `Cadastro de atendimento deletado com sucesso!`
               )
             );
           } else {
-            resolve(createResponse(404, `Cliente não encontrado!`));
+            resolve(createResponse(404, `Atendimento não encontrado!`));
           }
         })
         .catch(err => reject(createResponse(500, err)));
@@ -146,4 +142,4 @@ const customerController = {
   },
 };
 
-module.exports = customerController;
+module.exports = attendanceController;
