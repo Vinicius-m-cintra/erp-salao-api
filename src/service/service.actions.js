@@ -16,7 +16,9 @@ const serviceActions = {
     const offset = params.offset || 0;
 
     try {
-      const services = await Service.find()
+      const services = await Service.find({
+        name: new RegExp(params.name, 'i'),
+      })
         .limit(limit)
         .skip(limit * offset);
       return formatResponse(services, { limit, offset });

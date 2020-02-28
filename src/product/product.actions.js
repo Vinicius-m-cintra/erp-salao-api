@@ -16,7 +16,9 @@ const productActions = {
     const offset = params.offset || 0;
 
     try {
-      const products = await Product.find()
+      const products = await Product.find({
+        name: new RegExp(params.name, 'i'),
+      })
         .limit(limit)
         .skip(limit * offset)
         .populate('provider');

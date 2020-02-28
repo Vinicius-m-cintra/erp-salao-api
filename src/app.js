@@ -9,6 +9,7 @@ const customerRoutes = require('./customer/customer.routes');
 const productRoutes = require('./product/product.routes');
 const serviceRoutes = require('./service/service.routes');
 const paymentRoutes = require('./payment/payment.routes');
+const security = require('./security');
 
 const app = express();
 
@@ -25,6 +26,7 @@ class AppController {
 
   middlewares() {
     this.express.use(express.json());
+    this.express.use(security);
   }
 
   routes() {

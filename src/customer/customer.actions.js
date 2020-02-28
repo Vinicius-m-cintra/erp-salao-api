@@ -14,9 +14,10 @@ const customerActions = {
   async findAll(params) {
     const limit = parseInt(params.limit, {}) || 10;
     const offset = params.offset || 0;
-
     try {
-      const customers = await Customer.find()
+      const customers = await Customer.find({
+        name: new RegExp(params.name, 'i'),
+      })
         .limit(limit)
         .skip(limit * offset);
       return formatResponse(customers, { limit, offset });

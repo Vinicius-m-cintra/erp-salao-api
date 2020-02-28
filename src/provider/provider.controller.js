@@ -30,6 +30,7 @@ const providerController = {
   findAll(params) {
     return new Promise(async (resolve, reject) => {
       const schema = Joi.object({
+        name: Joi.string(),
         limit: Joi.number()
           .integer()
           .min(1)

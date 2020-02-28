@@ -16,7 +16,9 @@ const providerActions = {
     const offset = params.offset || 0;
 
     try {
-      const providers = await Provider.find()
+      const providers = await Provider.find({
+        name: new RegExp(params.name, 'i'),
+      })
         .limit(limit)
         .skip(limit * offset);
       return formatResponse(providers, { limit, offset });
