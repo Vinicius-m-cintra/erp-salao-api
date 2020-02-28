@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
 module.exports = app => {
-  mongoose.connect(app, { useNewUrlParser: true, useUnifiedTopology: true });
+  mongoose.connect(app, {
+    useCreateIndex: true,
+    useNewUrlParser: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  });
 
   mongoose.set('useFindAndModify', false);
   mongoose.set('useCreateIndex', true);
