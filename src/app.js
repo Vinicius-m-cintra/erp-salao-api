@@ -11,11 +11,7 @@ const serviceRoutes = require('./service/service.routes');
 const paymentRoutes = require('./payment/payment.routes');
 const security = require('./security');
 
-const app = express();
-
 database(process.env.DATABASE);
-
-app.use(cors());
 
 class AppController {
   constructor() {
@@ -25,6 +21,7 @@ class AppController {
   }
 
   middlewares() {
+    this.express.use(cors);
     this.express.use(express.json());
     this.express.use(security);
   }
