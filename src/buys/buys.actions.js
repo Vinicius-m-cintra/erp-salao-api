@@ -8,24 +8,34 @@ const buysActions = {
   async saveBuy(data) {
     const { products } = data;
     const debt = data.total_value - data.paid_value;
-    const provider = await Provider.findById(data.provider);
-    const { balance } = provider;
-    products.map(async product => {
-      const product1 = await Product.findById(product.id);
-      const { stock } = product1;
-      await Product.findByIdAndUpdate(product.id, {
-        stock: stock + product.quantity,
+    const provider = await Provider.findById(data.provider)
+      .then(async () => {
+        const { balance } = provider;
+        products.map(async product => {
+          const product1 = await Product.findById(product.id);
+          const { stock } = product1;
+          await Product.findByIdAndUpdate(product.id, {
+            stock: stock + product.quantity,
+          });
+        });
+        await Provider.findByIdAndUpdate(data.provider, {
+          balance: balance - debt,
+        })
+          .then(async () => {
+            try {
+              await Buy.create(data);
+            } catch (error) {
+              return error;
+            }
+          })
+          .catch(err => {
+            return err;
+          });
+      })
+      .catch(err => {
+        return err;
       });
-    });
-    await Provider.findByIdAndUpdate(data.provider, {
-      balance: balance - debt,
-    });
-    try {
-      await Buy.create(data);
-      return 'Compra efetuada com sucesso';
-    } catch (error) {
-      return error;
-    }
+    return 'Compra efetuada com sucesso';
   },
   async listBuys(provider) {
     const term = moment().subtract(3, 'months');
