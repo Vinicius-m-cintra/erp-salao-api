@@ -69,7 +69,7 @@ const customerController = {
         .findOne(id)
         .then(customer => {
           if (!customer) {
-            return reject(createResponse(404, 'Fornecedor não encontrado'));
+            return reject(createResponse(404, 'Cliente não encontrado'));
           }
           resolve(createResponse(200, customer));
         })

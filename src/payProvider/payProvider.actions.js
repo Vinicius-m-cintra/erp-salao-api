@@ -2,23 +2,30 @@ const PayProvider = require('./payProvider.model');
 const Provider = require('../provider/provider.model');
 
 const payProvderActions = {
-  async savePayment(data) {
-    const { balance } = await Provider.findById(data.provider);
-    await Provider.findByIdAndUpdate(data.provider, {
-      balance: balance + data.total,
-    })
-      .then(async () => {
-        await PayProvider.create(data)
-          .then(() => {
-            return 'Pagamento efetuado com sucesso';
+  savePayment(data) {
+    return new Promise((resolve, reject) => {
+      Provider.findById(data.provider)
+        .then(provider => {
+          Provider.findByIdAndUpdate(data.provider, {
+            balance: provider.balance + data.total,
           })
-          .catch(err => {
-            return err;
-          });
-      })
-      .catch(err => {
-        return err;
-      });
+            .then(() => {
+              PayProvider.create(data)
+                .then(() => {
+                  return resolve('Pagamento efetuado com sucesso');
+                })
+                .catch(err => {
+                  return reject(err);
+                });
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
 };
 

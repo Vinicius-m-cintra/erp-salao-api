@@ -3,53 +3,70 @@ const Product = require('./product.model');
 const formatResponse = require('../common/formatResponse');
 
 const productActions = {
-  async saveProduct(data) {
-    try {
-      await Product.create(data);
-      return 'Produto cadastrado com sucesso';
-    } catch (error) {
-      return error;
-    }
+  saveProduct(data) {
+    return new Promise((resolve, reject) => {
+      Product.create(data)
+        .then(() => {
+          return resolve('Produto cadastrado com sucesso');
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async findAll(params) {
-    const limit = parseInt(params.limit, {}) || 10;
-    const offset = params.offset || 0;
+  findAll(params) {
+    return new Promise((resolve, reject) => {
+      const limit = parseInt(params.limit, {}) || 10;
+      const offset = params.offset || 0;
 
-    try {
-      const products = await Product.find({
+      Product.find({
         name: new RegExp(params.name, 'i'),
       })
         .limit(limit)
         .skip(limit * offset)
-        .populate('provider');
-      return formatResponse(products, { limit, offset });
-    } catch (error) {
-      return error;
-    }
+        .populate('provider')
+        .then(products => {
+          return resolve(formatResponse(products, { limit, offset }));
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async findOne(id) {
-    try {
-      const product = await Product.findById(id).populate('provider');
-      return product;
-    } catch (error) {
-      return error;
-    }
+  findOne(id) {
+    return new Promise((resolve, reject) => {
+      Product.findById(id)
+        .populate('provider')
+        .then(product => {
+          return resolve(product);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async editProduct(req) {
-    try {
-      const product = await Product.findByIdAndUpdate(req.params.id, req.body);
-      return product;
-    } catch (error) {
-      return error;
-    }
+  editProduct(req) {
+    return new Promise((resolve, reject) => {
+      Product.findByIdAndUpdate(req.params.id, req.body)
+        .populate('provider')
+        .then(product => {
+          return resolve(product);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async deleteProduct(id) {
-    try {
-      const product = await Product.findByIdAndDelete(id);
-      return product;
-    } catch (error) {
-      return error;
-    }
+  deleteProduct(id) {
+    return new Promise((resolve, reject) => {
+      Product.findByIdAndDelete(id)
+        .then(product => {
+          return resolve(product);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
 };
 

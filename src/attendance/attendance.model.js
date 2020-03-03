@@ -10,6 +10,10 @@ const schema = mongoose.Schema({
     type: Number,
     required: true,
   },
+  paid_value: {
+    type: Number,
+    required: true,
+  },
   customer: {
     type: mongoose.ObjectId,
     ref: 'Customer',

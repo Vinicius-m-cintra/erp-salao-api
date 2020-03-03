@@ -3,54 +3,66 @@ const Customer = require('./customer.model');
 const formatResponse = require('../common/formatResponse');
 
 const customerActions = {
-  async saveCustomer(data) {
-    try {
-      await Customer.create(data);
-      return 'Cliente cadastrado com sucesso';
-    } catch (error) {
-      return error;
-    }
+  saveCustomer(data) {
+    return new Promise((resolve, reject) => {
+      Customer.create(data)
+        .then(() => {
+          return resolve('Cliente cadastrado com sucesso');
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async findAll(params) {
-    const limit = parseInt(params.limit, {}) || 10;
-    const offset = params.offset || 0;
-    try {
-      const customers = await Customer.find({
+  findAll(params) {
+    return new Promise((resolve, reject) => {
+      const limit = parseInt(params.limit, {}) || 10;
+      const offset = params.offset || 0;
+      Customer.find({
         name: new RegExp(params.name, 'i'),
       })
         .limit(limit)
-        .skip(limit * offset);
-      return formatResponse(customers, { limit, offset });
-    } catch (error) {
-      return error;
-    }
+        .skip(limit * offset)
+        .then(customers => {
+          return resolve(formatResponse(customers, { limit, offset }));
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async findOne(id) {
-    try {
-      const customer = await Customer.findById(id);
-      return customer;
-    } catch (error) {
-      return error;
-    }
+  findOne(id) {
+    return new Promise((resolve, reject) => {
+      Customer.findById(id)
+        .then(customer => {
+          return resolve(customer);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async editCustomer(req) {
-    try {
-      const customer = await Customer.findByIdAndUpdate(
-        req.params.id,
-        req.body
-      );
-      return customer;
-    } catch (error) {
-      return error;
-    }
+  editCustomer(req) {
+    return new Promise((resolve, reject) => {
+      Customer.findByIdAndUpdate(req.params.id, req.body)
+        .then(customer => {
+          return resolve(customer);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async deleteCustomer(id) {
-    try {
-      const customer = await Customer.findByIdAndDelete(id);
-      return customer;
-    } catch (error) {
-      return error;
-    }
+  deleteCustomer(id) {
+    return new Promise((resolve, reject) => {
+      Customer.findByIdAndDelete(id)
+        .then(customer => {
+          return resolve(customer);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
 };
 

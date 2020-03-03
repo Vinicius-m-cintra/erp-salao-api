@@ -1,64 +1,95 @@
+/* eslint-disable consistent-return */
 const moment = require('moment');
 const Buy = require('./buys.model');
 const Provider = require('../provider/provider.model');
 const Product = require('../product/product.model');
-const payProvider = require('../payProvider/payProvider.model');
+const PayProvider = require('../payProvider/payProvider.model');
 
 const buysActions = {
-  async saveBuy(data) {
-    const { products } = data;
-    const debt = data.total_value - data.paid_value;
-    const provider = await Provider.findById(data.provider)
-      .then(async () => {
-        const { balance } = provider;
-        products.map(async product => {
-          const product1 = await Product.findById(product.id);
-          const { stock } = product1;
-          await Product.findByIdAndUpdate(product.id, {
-            stock: stock + product.quantity,
+  saveBuy(data) {
+    return new Promise((resolve, reject) => {
+      const { products } = data;
+      const debt = data.total_value - data.paid_value;
+      Provider.findById(data.provider)
+        .then(provider => {
+          const { balance } = provider;
+          // eslint-disable-next-line array-callback-return
+          products.map(product => {
+            const product1 = Product.findById(product.id);
+            const { stock } = product1;
+            Product.findByIdAndUpdate(product.id, {
+              stock: stock + product.quantity,
+            });
           });
-        });
-        await Provider.findByIdAndUpdate(data.provider, {
-          balance: balance - debt,
-        })
-          .then(async () => {
-            try {
-              await Buy.create(data);
-            } catch (error) {
-              return error;
-            }
+          Provider.findByIdAndUpdate(data.provider, {
+            balance: balance - debt,
           })
-          .catch(err => {
-            return err;
-          });
-      })
-      .catch(err => {
-        return err;
-      });
-    return 'Compra efetuada com sucesso';
+            .then(() => {
+              try {
+                Buy.create(data).then(() => {
+                  return resolve('Compra efetuada com sucesso');
+                });
+              } catch (error) {
+                return reject(error);
+              }
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async listBuys(provider) {
-    const term = moment().subtract(3, 'months');
-    const today = moment().startOf('day');
-    const buys = await Buy.find({
-      provider,
-      createdAt: {
-        $gte: term.toDate(),
-        $lte: moment(today)
-          .endOf('day')
-          .toDate(),
-      },
+  listBuys(provider) {
+    return new Promise((resolve, reject) => {
+      const term = moment().subtract(3, 'months');
+      const today = moment().startOf('day');
+      const response = {};
+      Buy.find();
+      Buy.find(
+        {
+          provider,
+          createdAt: {
+            $gte: term.toDate(),
+            $lte: moment(today)
+              .endOf('day')
+              .toDate(),
+          },
+        },
+        {
+          total_value: 'total_value',
+          paid_value: 'paid_value',
+          createdAt: 'createdAt',
+        }
+      )
+        .then(buy => {
+          response.buy = buy;
+          PayProvider.find(
+            {
+              provider,
+              createdAt: {
+                $gte: term.toDate(),
+                $lte: moment(today)
+                  .endOf('day')
+                  .toDate(),
+              },
+            },
+            { total: 'total', comment: 'comment', createdAt: 'createdAt' }
+          )
+            .then(payProvider => {
+              response.payments = payProvider;
+              return resolve(response);
+            })
+            .catch(err => {
+              return reject(err);
+            });
+        })
+        .catch(err => {
+          return reject(err);
+        });
     });
-    const payments = await payProvider.find({
-      provider,
-      createdAt: {
-        $gte: term.toDate(),
-        $lte: moment(today)
-          .endOf('day')
-          .toDate(),
-      },
-    });
-    return { buys, payments };
   },
 };
 

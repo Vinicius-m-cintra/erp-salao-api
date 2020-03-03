@@ -3,55 +3,67 @@ const Provider = require('./provider.model');
 const formatResponse = require('../common/formatResponse');
 
 const providerActions = {
-  async saveProvider(data) {
-    try {
-      await Provider.create(data);
-      return 'Fornecedor cadastrado com sucesso';
-    } catch (error) {
-      return error;
-    }
+  saveProvider(data) {
+    return new Promise((resolve, reject) => {
+      Provider.create(data)
+        .then(() => {
+          return resolve('Fornecedor cadastrado com sucesso');
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async findAll(params) {
-    const limit = parseInt(params.limit, {}) || 10;
-    const offset = params.offset || 0;
+  findAll(params) {
+    return new Promise((resolve, reject) => {
+      const limit = parseInt(params.limit, {}) || 10;
+      const offset = params.offset || 0;
 
-    try {
-      const providers = await Provider.find({
+      Provider.find({
         name: new RegExp(params.name, 'i'),
       })
         .limit(limit)
-        .skip(limit * offset);
-      return formatResponse(providers, { limit, offset });
-    } catch (error) {
-      return error;
-    }
+        .skip(limit * offset)
+        .then(providers => {
+          return resolve(formatResponse(providers, { limit, offset }));
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async findOne(id) {
-    try {
-      const provider = await Provider.findById(id);
-      return provider;
-    } catch (error) {
-      return error;
-    }
+  findOne(id) {
+    return new Promise((resolve, reject) => {
+      Provider.findById(id)
+        .then(provider => {
+          return resolve(provider);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async editProvider(req) {
-    try {
-      const provider = await Provider.findByIdAndUpdate(
-        req.params.id,
-        req.body
-      );
-      return provider;
-    } catch (error) {
-      return error;
-    }
+  editProvider(req) {
+    return new Promise((resolve, reject) => {
+      Provider.findByIdAndUpdate(req.params.id, req.body)
+        .then(provider => {
+          return resolve(provider);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async deleteProvider(id) {
-    try {
-      const provider = await Provider.findByIdAndDelete(id);
-      return provider;
-    } catch (error) {
-      return error;
-    }
+  deleteProvider(id) {
+    return new Promise((resolve, reject) => {
+      Provider.findByIdAndDelete(id)
+        .then(provider => {
+          return resolve(provider);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
 };
 

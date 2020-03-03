@@ -3,52 +3,67 @@ const Service = require('./service.model');
 const formatResponse = require('../common/formatResponse');
 
 const serviceActions = {
-  async saveService(data) {
-    try {
-      await Service.create(data);
-      return 'Serviço cadastrado com sucesso';
-    } catch (error) {
-      return error;
-    }
+  saveService(data) {
+    return new Promise((resolve, reject) => {
+      Service.create(data)
+        .then(() => {
+          return resolve('Serviço cadastrado com sucesso');
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async findAll(params) {
-    const limit = parseInt(params.limit, {}) || 10;
-    const offset = params.offset || 0;
+  findAll(params) {
+    return new Promise((resolve, reject) => {
+      const limit = parseInt(params.limit, {}) || 10;
+      const offset = params.offset || 0;
 
-    try {
-      const services = await Service.find({
+      Service.find({
         name: new RegExp(params.name, 'i'),
       })
         .limit(limit)
-        .skip(limit * offset);
-      return formatResponse(services, { limit, offset });
-    } catch (error) {
-      return error;
-    }
+        .skip(limit * offset)
+        .then(services => {
+          return resolve(formatResponse(services, { limit, offset }));
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async findOne(id) {
-    try {
-      const service = await Service.findById(id);
-      return service;
-    } catch (error) {
-      return error;
-    }
+  findOne(id) {
+    return new Promise((resolve, reject) => {
+      Service.findById(id)
+        .then(service => {
+          return resolve(service);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async editService(req) {
-    try {
-      const service = await Service.findByIdAndUpdate(req.params.id, req.body);
-      return service;
-    } catch (error) {
-      return error;
-    }
+  editService(req) {
+    return new Promise((resolve, reject) => {
+      Service.findByIdAndUpdate(req.params.id, req.body)
+        .then(service => {
+          return resolve(service);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
-  async deleteService(id) {
-    try {
-      const service = await Service.findByIdAndDelete(id);
-      return service;
-    } catch (error) {
-      return error;
-    }
+  deleteService(id) {
+    return new Promise((resolve, reject) => {
+      Service.findByIdAndDelete(id)
+        .then(service => {
+          return resolve(service);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
   },
 };
 

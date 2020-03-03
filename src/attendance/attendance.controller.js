@@ -12,6 +12,9 @@ const attendanceController = {
         total: Joi.number()
           .min(1)
           .required(),
+        paid_value: Joi.number()
+          .min(1)
+          .required(),
         customer: Joi.string().required(),
         product_service: Joi.array().items(
           Joi.object({
@@ -82,16 +85,19 @@ const attendanceController = {
         total: Joi.number()
           .min(1)
           .required(),
+        paid_value: Joi.number()
+          .min(1)
+          .required(),
         customer: Joi.string().required(),
-        product_service: Joi.array([
+        product_service: Joi.array().items(
           Joi.object({
             name: Joi.string().required(),
             description: Joi.string(),
             value: Joi.number()
               .min(1)
               .required(),
-          }),
-        ]),
+          })
+        ),
       });
 
       const { error } = await schema.validate({
