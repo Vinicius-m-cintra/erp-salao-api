@@ -21,14 +21,17 @@ class AppController {
   }
 
   middlewares() {
-    this.express.use(cors);
+    this.express.use(cors(), (req, res, next) => {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+      next();
+    });
     this.express.use(express.json());
     this.express.use(security);
   }
 
   routes() {
     this.express.use(routes);
-
     this.express.use(attendanceRoutes);
     this.express.use(customerRoutes);
     this.express.use(providerRoutes);
