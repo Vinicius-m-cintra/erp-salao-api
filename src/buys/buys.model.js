@@ -15,7 +15,6 @@ const schema = mongoose.Schema(
         },
         cust_price: {
           type: Number,
-          required: true,
         },
         description: {
           type: String,

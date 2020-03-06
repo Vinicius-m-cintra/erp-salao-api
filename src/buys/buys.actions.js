@@ -47,7 +47,6 @@ const buysActions = {
       const term = moment().subtract(3, 'months');
       const today = moment().startOf('day');
       const response = {};
-      Buy.find();
       Buy.find(
         {
           provider,
@@ -62,6 +61,11 @@ const buysActions = {
           total_value: 'total_value',
           paid_value: 'paid_value',
           createdAt: 'createdAt',
+        },
+        {
+          sort: {
+            createdAt: -1,
+          },
         }
       )
         .then(buy => {
@@ -76,7 +80,12 @@ const buysActions = {
                   .toDate(),
               },
             },
-            { total: 'total', comment: 'comment', createdAt: 'createdAt' }
+            { total: 'total', comment: 'comment', createdAt: 'createdAt' },
+            {
+              sort: {
+                createdAt: -1,
+              },
+            }
           )
             .then(payProvider => {
               response.payments = payProvider;

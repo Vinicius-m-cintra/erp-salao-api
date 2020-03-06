@@ -11,11 +11,8 @@ const buysController = {
         provider: Joi.string().required(),
         products: Joi.array().items(
           Joi.object({
-            id: Joi.string().required(),
             name: Joi.string().required(),
-            cust_price: Joi.number()
-              .required()
-              .min(0),
+            cust_price: Joi.number().min(0),
             description: Joi.string(),
             sku: Joi.string(),
             quantity: Joi.number()
