@@ -7,7 +7,7 @@ const payProvderActions = {
       Provider.findById(data.provider)
         .then(provider => {
           Provider.findByIdAndUpdate(data.provider, {
-            balance: provider.balance + data.total,
+            balance: provider.balance + parseFloat(data.total),
           })
             .then(() => {
               PayProvider.create(data)
