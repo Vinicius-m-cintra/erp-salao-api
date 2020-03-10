@@ -72,4 +72,17 @@ attendanceRoutes.delete('/attendance/:id', async (req, res, next) => {
   next();
 });
 
+attendanceRoutes.get('/attendances', async (req, res, next) => {
+  const response = await attendanceController
+    .listAttendances(req.query.customer)
+    .then(answer => {
+      return answer;
+    })
+    .catch(error => {
+      return error;
+    });
+  res.status(response.statusCode).send(response.result);
+  next();
+});
+
 module.exports = attendanceRoutes;

@@ -72,4 +72,18 @@ productRoutes.delete('/product/:id', async (req, res, next) => {
   next();
 });
 
+productRoutes.get('/product-service', async (req, res, next) => {
+  const response = await productController
+    .findProductService(req.query.search)
+    .then(answer => {
+      return answer;
+    })
+    .catch(error => {
+      return error;
+    });
+
+  res.status(response.statusCode).send(response.result);
+  next();
+});
+
 module.exports = productRoutes;

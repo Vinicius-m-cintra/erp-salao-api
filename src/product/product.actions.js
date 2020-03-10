@@ -1,4 +1,5 @@
 const Product = require('./product.model');
+const Service = require('../service/service.model');
 
 const formatResponse = require('../common/formatResponse');
 
@@ -62,6 +63,46 @@ const productActions = {
       Product.findByIdAndDelete(id)
         .then(product => {
           return resolve(product);
+        })
+        .catch(err => {
+          return reject(err);
+        });
+    });
+  },
+  findProductService(search) {
+    return new Promise((resolve, reject) => {
+      const response = {};
+      Product.find(
+        {
+          name: new RegExp(search, 'i'),
+        },
+        {
+          name: 'name',
+          description: 'description',
+          cust_price: 'cust_price',
+        }
+      )
+        .limit(10)
+        .then(res => {
+          response.products = res;
+          Service.find(
+            {
+              name: new RegExp(search, 'i'),
+            },
+            {
+              name: 'name',
+              description: 'description',
+              suggested_value: 'suggested_value',
+            }
+          )
+            .limit(10)
+            .then(result => {
+              response.services = result;
+              return resolve(response);
+            })
+            .catch(err => {
+              return reject(err);
+            });
         })
         .catch(err => {
           return reject(err);

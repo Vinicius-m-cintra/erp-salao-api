@@ -1,10 +1,12 @@
+const moment = require('moment');
 const Attendance = require('./attendance.model');
 const Customer = require('../customer/customer.model');
+const Payment = require('../payment/payment.model');
 
 const formatResponse = require('../common/formatResponse');
 
 const attendanceActions = {
-  async saveAttendance(data) {
+  saveAttendance(data) {
     return new Promise((resolve, reject) => {
       const { customer } = data;
       Customer.findById(customer, { debt: 'debt' }).then(debt => {
@@ -26,7 +28,7 @@ const attendanceActions = {
       });
     });
   },
-  async findAll(params) {
+  findAll(params) {
     return new Promise((resolve, reject) => {
       const limit = parseInt(params.limit, {}) || 10;
       const offset = params.offset || 0;
@@ -43,7 +45,7 @@ const attendanceActions = {
         });
     });
   },
-  async findOne(id) {
+  findOne(id) {
     return new Promise((resolve, reject) => {
       Attendance.findById(id)
         .then(attendance => {
@@ -54,7 +56,7 @@ const attendanceActions = {
         });
     });
   },
-  async editAttendance(req) {
+  editAttendance(req) {
     return new Promise((resolve, reject) => {
       Attendance.findByIdAndUpdate(req.params.id, req.body).then(attendance => {
         return resolve(attendance).catch(err => {
@@ -63,7 +65,7 @@ const attendanceActions = {
       });
     });
   },
-  async deleteAttendance(id) {
+  deleteAttendance(id) {
     return new Promise((resolve, reject) => {
       Attendance.findByIdAndDelete(id)
         .then(attendance => {
@@ -72,6 +74,65 @@ const attendanceActions = {
         .catch(err => {
           return reject(err);
         });
+    });
+  },
+  listAttendances(customer) {
+    return new Promise((resolve, reject) => {
+      const term = moment().subtract(3, 'months');
+      const today = moment().startOf('day');
+      const response = {};
+      Attendance.find(
+        {
+          customer,
+          createdAt: {
+            $gte: term.toDate(),
+            $lte: moment(today)
+              .endOf('day')
+              .toDate(),
+          },
+        },
+        {
+          total: 'total',
+          paid_value: 'paid_value',
+          product_service: 'product_service',
+          createdAt: 'createdAt',
+        },
+        {
+          sort: {
+            createdAt: -1,
+          },
+        }
+      ).then(attendances => {
+        response.attendances = attendances;
+        Payment.find(
+          {
+            customer,
+            createdAt: {
+              $gte: term.toDate(),
+              $lte: moment(today)
+                .endOf('day')
+                .toDate(),
+            },
+          },
+          {
+            description: 'description',
+            value: 'value',
+            createdAt: 'createdAt',
+          },
+          {
+            sort: {
+              createdAt: -1,
+            },
+          }
+        )
+          .then(payments => {
+            response.payments = payments;
+            return resolve(response);
+          })
+          .catch(err => {
+            return reject(err);
+          });
+      });
     });
   },
 };

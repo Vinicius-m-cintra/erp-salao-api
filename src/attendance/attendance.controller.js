@@ -16,6 +16,7 @@ const attendanceController = {
           .min(1)
           .required(),
         customer: Joi.string().required(),
+        comment: Joi.string(),
         product_service: Joi.array().items(
           Joi.object({
             name: Joi.string().required(),
@@ -89,6 +90,7 @@ const attendanceController = {
           .min(1)
           .required(),
         customer: Joi.string().required(),
+        comment: Joi.string(),
         product_service: Joi.array().items(
           Joi.object({
             name: Joi.string().required(),
@@ -143,6 +145,19 @@ const attendanceController = {
             resolve(createResponse(404, `Atendimento não encontrado!`));
           }
         })
+        .catch(err => reject(createResponse(500, err)));
+    });
+  },
+  listAttendances(customer) {
+    return new Promise((resolve, reject) => {
+      const id = Joi.string().required();
+
+      const { error } = id.validate(customer);
+      if (error) return reject(createResponse(500, error));
+
+      attendanceActions
+        .listAttendances(customer)
+        .then(response => resolve(createResponse(200, response)))
         .catch(err => reject(createResponse(500, err)));
     });
   },

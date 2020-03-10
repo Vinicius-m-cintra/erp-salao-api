@@ -134,6 +134,23 @@ const productController = {
         .catch(err => reject(createResponse(500, err)));
     });
   },
+  findProductService(search) {
+    return new Promise((resolve, reject) => {
+      const schema = Joi.string().required();
+
+      const { error } = schema.validate(search);
+      if (error) return reject(createResponse(400, error));
+
+      productActions
+        .findProductService(search)
+        .then(products_services => {
+          resolve(createResponse(200, products_services));
+        })
+        .catch(err => {
+          reject(createResponse(500, err));
+        });
+    });
+  },
 };
 
 module.exports = productController;
