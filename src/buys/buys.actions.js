@@ -61,6 +61,7 @@ const buysActions = {
           total_value: 'total_value',
           paid_value: 'paid_value',
           createdAt: 'createdAt',
+          products: 'products',
         },
         {
           sort: {

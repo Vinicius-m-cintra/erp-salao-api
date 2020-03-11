@@ -11,6 +11,7 @@ const serviceRoutes = require('./service/service.routes');
 const paymentRoutes = require('./payment/payment.routes');
 const buysRoutes = require('./buys/buys.routes');
 const payProviderRoutes = require('./payProvider/payProvider.routes');
+const userRoutes = require('./user/user.routes');
 const security = require('./security');
 
 database(process.env.DATABASE);
@@ -42,6 +43,7 @@ class AppController {
     this.express.use(paymentRoutes);
     this.express.use(buysRoutes);
     this.express.use(payProviderRoutes);
+    this.express.use(userRoutes);
   }
 }
 

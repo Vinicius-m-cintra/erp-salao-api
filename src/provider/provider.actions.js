@@ -24,6 +24,7 @@ const providerActions = {
       })
         .limit(limit)
         .skip(limit * offset)
+        .sort({ updatedAt: -1 })
         .then(providers => {
           return resolve(formatResponse(providers, { limit, offset }));
         })
