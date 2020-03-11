@@ -25,7 +25,7 @@ const userController = {
       userActions
         .register(user)
         .then(response => resolve(createResponse(200, response)))
-        .catch(err => reject(createResponse(500, err)));
+        .catch(err => reject(createResponse(400, err)));
     });
   },
   login(user) {
@@ -46,7 +46,7 @@ const userController = {
       userActions
         .login(user)
         .then(response => resolve(createResponse(200, response)))
-        .catch(err => reject(createResponse(500, err)));
+        .catch(err => reject(createResponse(err.code, err.message)));
     });
   },
 };

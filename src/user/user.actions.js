@@ -20,10 +20,12 @@ const userActions = {
       const { email, password } = data;
       const user = await User.findOne({ email }).select('+password');
 
-      if (!user) return reject('Usuário não encontrado');
+      if (!user)
+        return reject({ code: 404, message: 'usuario não encontrado' });
 
       const validate = await bcrypt.compare(password, user.password);
-      if (!validate) return reject({ error: 'Senhas não conferem' });
+      if (!validate)
+        return reject({ code: 400, message: 'Senhas não conferem' });
 
       return resolve({ token: process.env.TOKEN });
     });

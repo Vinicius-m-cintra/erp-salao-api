@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-  if (req.originalUrl === '/ping') {
+  if (req.originalUrl === '/ping' || req.originalUrl === '/login') {
     next();
   } else {
     try {
