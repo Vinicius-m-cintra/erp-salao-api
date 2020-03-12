@@ -23,6 +23,7 @@ const customerActions = {
       })
         .limit(limit)
         .skip(limit * offset)
+        .sort({ name: 1 })
         .then(customers => {
           return resolve(formatResponse(customers, { limit, offset }));
         })
