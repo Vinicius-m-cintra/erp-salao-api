@@ -11,7 +11,10 @@ const customerController = {
         name: Joi.string().required(),
         birth: Joi.string().required(),
         email: Joi.string()
-          .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+          .email({
+            minDomainSegments: 2,
+            tlds: { allow: ['com', 'net', 'br'] },
+          })
           .required(),
         cellphone: Joi.string().required(),
         postcode: Joi.string().required(),
@@ -84,7 +87,7 @@ const customerController = {
         birth: Joi.string(),
         email: Joi.string().email({
           minDomainSegments: 2,
-          tlds: { allow: ['com', 'net'] },
+          tlds: { allow: ['com', 'net', 'br'] },
         }),
         cellphone: Joi.string(),
         postcode: Joi.string(),
