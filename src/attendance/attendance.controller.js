@@ -13,7 +13,7 @@ const attendanceController = {
           .min(1)
           .required(),
         paid_value: Joi.number()
-          .min(1)
+          .min(0)
           .required(),
         customer: Joi.string().required(),
         comment: Joi.string(),
@@ -22,7 +22,7 @@ const attendanceController = {
             name: Joi.string().required(),
             description: Joi.string(),
             value: Joi.number()
-              .min(1)
+              .min(0)
               .required(),
           })
         ),
@@ -87,7 +87,7 @@ const attendanceController = {
           .min(1)
           .required(),
         paid_value: Joi.number()
-          .min(1)
+          .min(0)
           .required(),
         customer: Joi.string(),
         comment: Joi.string(),
@@ -96,7 +96,7 @@ const attendanceController = {
             name: Joi.string().required(),
             description: Joi.string(),
             value: Joi.number()
-              .min(1)
+              .min(0)
               .required(),
           })
         ),
