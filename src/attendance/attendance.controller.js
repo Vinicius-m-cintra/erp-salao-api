@@ -89,7 +89,7 @@ const attendanceController = {
         paid_value: Joi.number()
           .min(1)
           .required(),
-        customer: Joi.string().required(),
+        customer: Joi.string(),
         comment: Joi.string(),
         product_service: Joi.array().items(
           Joi.object({
