@@ -8,6 +8,9 @@ const schema = mongoose.Schema({
   cust_price: {
     type: Number,
   },
+  suggested_value: {
+    type: Number,
+  },
   stock: {
     type: Number,
     required: true,

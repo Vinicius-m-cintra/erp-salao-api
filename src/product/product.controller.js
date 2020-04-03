@@ -10,6 +10,7 @@ const productController = {
       const schema = Joi.object({
         name: Joi.string().required(),
         cust_price: Joi.number(),
+        suggested_value: Joi.number(),
         stock: Joi.number()
           .integer()
           .min(0)
@@ -76,6 +77,7 @@ const productController = {
         id: Joi.string().required(),
         name: Joi.string(),
         cust_price: Joi.number(),
+        suggested_value: Joi.number(),
         stock: Joi.number()
           .integer()
           .min(0)

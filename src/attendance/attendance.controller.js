@@ -10,7 +10,7 @@ const attendanceController = {
       const schema = Joi.object({
         discount: Joi.number().min(0),
         total: Joi.number()
-          .min(1)
+          .min(0)
           .required(),
         paid_value: Joi.number()
           .min(0)
@@ -84,7 +84,7 @@ const attendanceController = {
         id: Joi.string().required(),
         discount: Joi.number().min(0),
         total: Joi.number()
-          .min(1)
+          .min(0)
           .required(),
         paid_value: Joi.number()
           .min(0)

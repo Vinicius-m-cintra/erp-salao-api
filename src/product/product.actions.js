@@ -79,7 +79,7 @@ const productActions = {
         {
           name: 'name',
           description: 'description',
-          cust_price: 'cust_price',
+          suggested_value: 'suggested_value',
         }
       )
         .limit(10)

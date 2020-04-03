@@ -34,7 +34,7 @@ const providerController = {
         limit: Joi.number()
           .integer()
           .min(1)
-          .max(100),
+          .max(300),
         offset: Joi.number()
           .integer()
           .min(0),
