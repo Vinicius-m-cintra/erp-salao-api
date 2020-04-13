@@ -13,6 +13,8 @@ const schema = mongoose.Schema(
     },
     comment: {
       type: String,
+      required: true,
+      default: 'Sem comentário',
     },
   },
   { timestamps: true }

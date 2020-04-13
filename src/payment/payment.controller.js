@@ -8,7 +8,7 @@ const paymentController = {
   savePayment(data) {
     return new Promise(async (resolve, reject) => {
       const schema = Joi.object({
-        description: Joi.string().required(),
+        description: Joi.string(),
         value: Joi.number()
           .required()
           .min(1),
