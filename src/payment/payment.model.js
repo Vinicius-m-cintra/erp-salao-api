@@ -5,6 +5,7 @@ const schema = mongoose.Schema(
     description: {
       type: String,
       required: true,
+      default: 'Sem descrição',
     },
     value: {
       type: Number,
